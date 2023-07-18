@@ -48,12 +48,7 @@ const HomePage: NextPage = () => {
       body: JSON.stringify({ product: productInput }),
     })
     const data = await response.json();
-    console.log("data", data);
-    // console.log("data.result", data.result);
-
     let rawResult = data.item;
-
-    // console.log("rawResult");
 
     // set result to the highlighted code. Address this error: Argument of type 'string' is not assignable to parameter of type '(prevState: undefined) => undefined'.ts(2345)
     setResult(rawResult);
@@ -87,7 +82,7 @@ const HomePage: NextPage = () => {
                               border-gray-200 rounded mb-2"
             type="text"
             name="product"
-            placeholder="Enter anything ..."
+            placeholder="Enter some text for Spiderman..."
             value={productInput}
             onChange={(e) => setProductInput(e.target.value)}
           />
