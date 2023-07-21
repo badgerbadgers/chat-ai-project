@@ -4,16 +4,27 @@ import Head from "next/head";
 import { useState, useRef, useEffect } from "react";
 import React, { FormEvent } from "react";
 
-// console.log('chatsarr', chatsArr)
+// todo: push this to new array [...messages, { role: 'user', content: data.item }]
+interface Message {
+  role: string;
+  content: string;
+}
+
 const HomePage: NextPage = () => {
-  //we imported the variable of all chat history from api
-  //we are able to log or see that variable in the chat component
-  //todos: create a variable that sets state or updates the chatsArr (example: const [chatHistory, setChatHistory] = useState([]))
   const textDivRef = useRef<HTMLDivElement>(null);
-  const [productInput, setProductInput] = useState("");
+  const [chatInput, setChatInput] = useState("");
   const [result, setResult] = useState(() => "");
   const [isLoading, setIsLoading] = useState(false);
-  const [resultArray, setResultArray] = useState<string[]>([]);
+  const [resultArray, setResultArray] = useState<Message[]>([])
+  // const [resultArray, setResultArray] = useState<string[]>([]);
+
+  //array will be sent during POST req
+  const messages = [
+    ...resultArray,
+    { role: "system", content: "Respond in 3-4 sentences about the topic, as if you were a friendly neighborhood Spiderman. When signing off be sure to thank the user and remind them to be kind." }, {
+    role: "user", content: `${chatInput}`
+  }]
+  
   // Add a click event listener to the copy icon that copies the text in the div to the clipboard when clicked
   useEffect(() => {
     const copyIcon = document.querySelector(".copy-icon");
@@ -32,7 +43,7 @@ const HomePage: NextPage = () => {
       textArea.select();
 
       // Copy the text to the clipboard
-      document.execCommand("copy");
+      // document.execCommand("copy");
 
       // Remove the textarea element
       document.body.removeChild(textArea);
@@ -40,6 +51,7 @@ const HomePage: NextPage = () => {
   }, []);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    console.log('res array', messages)
     event.preventDefault();
     setIsLoading(true);
     const response = await fetch("/api/chat", {
@@ -47,20 +59,42 @@ const HomePage: NextPage = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ product: productInput }),
+      // body: JSON.stringify({ product: productInput }),
+            body: JSON.stringify({ chats: messages }),
+
+      // body: JSON.stringify(messages)
     })
+    // console.log('resy', response)
     const data = await response.json();
+    console.log('data', data)
+    //og code start
     let rawResult = data.item;
+    // setResultArray(rawResult)
+    //og code end
+// messages.push({ role: 'user', content: rawResult },...messages)
+setResultArray([...messages, { role: 'user', content: rawResult }])
+// setMessages((messages) => [
+//   ...messages,
+//   { role: 'user', content: rawResult },
+// ]);
+// messages.push({ role: 'user', content: rawResult })
+console.log('front end', messages)
     // Append the new result to the array
-    setResultArray((prevResults) => [...prevResults, rawResult]);
+    // setResultArray((prevResults) => [...prevResults, rawResult]);
+
+    //test
+    // setResultArray((prevResults) => [...prevResults, { role: 'user', content: rawResult }])
+    // todo: push this to new array [...messages, { role: 'user', content: data.item }]
+
+    console.log('chat history 1', messages)
+
     setResult(rawResult);
-    setProductInput("");
+    setChatInput("");
     setIsLoading(false);
 
   }
-  console.log('chat history 2',resultArray)
+  // console.log('chat history 2', messages)
 
-// console.log('chat outside of submit', chats)
   return (
     <div>
        <Head>
@@ -85,10 +119,10 @@ const HomePage: NextPage = () => {
                               mr-3 py-5 px-4 h-2 border 
                               border-gray-200 rounded mb-2"
             type="text"
-            name="product"
+            name="chat"
             placeholder="Enter some text for Spiderman..."
-            value={productInput}
-            onChange={(e) => setProductInput(e.target.value)}
+            value={chatInput}
+            onChange={(e) => setChatInput(e.target.value)}
           />
 
           <button

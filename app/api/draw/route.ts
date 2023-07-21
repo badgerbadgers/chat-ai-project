@@ -17,10 +17,6 @@ export async function POST(req: NextRequest) {
   const image_url = response.data.data[0].url;
   //todo:   drawArr.push({draw: `${text}`, url: image_url})
   drawArr.push(text, image_url)
-  console.log('draw arr',drawArr)
   return NextResponse.json({item: image_url});
 } 
-//todo save in img src 
-//save state and img and have way to download img
 
-//make 2 messages in the the array
