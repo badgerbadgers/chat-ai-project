@@ -1,3 +1,4 @@
+//open ai config file
 const { Configuration, OpenAIApi } = require("openai");
 
 const configuration = new Configuration({

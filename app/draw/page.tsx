@@ -13,38 +13,6 @@ const Draw: NextPage = () => {
   const [resultArray, setResultArray] = useState<string[]>([]);
   const lastIndex = resultArray.length - 1;
 
-  // const [fetching, setFetching] = useState<boolean>(false);
-  // const [error, setError] = useState<boolean>(false);
-  // const download = (url: string, name?: string) => {
-  //   if (!url) {
-  //     throw new Error("Resource URL not provided! You need to provide one");
-  //   }
-  //   setFetching(true);
-  //   fetch(url)
-  //     .then(response => response.blob())
-  //     .then(blob => {
-  //       setFetching(false);
-  //       const blobURL = URL.createObjectURL(blob);
-
-  //       const a = document.createElement("a");
-  //       a.href = blobURL;
-
-  //       if (name && name.length) {
-  //         a.download = name;
-  //       } else {
-  //         // If the name is not provided, extract it from the URL
-  //         const urlSplit = url.split("/");
-  //         a.download = urlSplit[urlSplit.length - 1];
-  //       }
-
-  //       // Append the anchor to the DOM and programmatically click on it
-  //       document.body.appendChild(a);
-  //       a.click();
-  //       document.body.removeChild(a);
-  //     })
-  //     .catch(() => setError(true));
-  // };
-  // Add a click event listener to the copy icon that copies the text in the div to the clipboard when clicked
   useEffect(() => {
     const copyIcon = document.querySelector(".copy-icon");
     if (!copyIcon) return;
@@ -134,17 +102,14 @@ const Draw: NextPage = () => {
               <div
                 ref={textDivRef}
                 className="m-5 "
-                // dangerouslySetInnerHTML={{ __html: result }}
               />
+              <h2>You drew:</h2>
               {resultArray[lastIndex]}
-              
               <a href={result}>
               {/* <button onClick={() => download(result, result)}>Download</button> */}
                 <img src={result} alt={productInput}>
                 </img>
               </a>
-              {/* <img src={result}></img> */}
-              {/* {result} */}
             </div>
             <div className="copy-icon absolute top-0 right-0 mt-2 mr-2 cursor-pointer">
               <svg

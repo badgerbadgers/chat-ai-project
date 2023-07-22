@@ -4,7 +4,6 @@ import Head from "next/head";
 import { useState, useRef, useEffect } from "react";
 import React, { FormEvent } from "react";
 
-// todo: push this to new array [...messages, { role: 'user', content: data.item }]
 interface Message {
   role: string;
   content: string;
@@ -16,9 +15,7 @@ const HomePage: NextPage = () => {
   const [result, setResult] = useState(() => "");
   const [isLoading, setIsLoading] = useState(false);
   const [resultArray, setResultArray] = useState<Message[]>([])
-  // const [resultArray, setResultArray] = useState<string[]>([]);
 
-  //array will be sent during POST req
   const messages = [
     ...resultArray,
     { role: "system", content: "Respond in 3-4 sentences about the topic, as if you were a friendly neighborhood Spiderman. When signing off be sure to thank the user and remind them to be kind." }, {
@@ -59,41 +56,15 @@ const HomePage: NextPage = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      // body: JSON.stringify({ product: productInput }),
-            body: JSON.stringify({ chats: messages }),
-
-      // body: JSON.stringify(messages)
+      body: JSON.stringify({ chats: messages }),
     })
-    // console.log('resy', response)
     const data = await response.json();
-    console.log('data', data)
-    //og code start
-    let rawResult = data.item;
-    // setResultArray(rawResult)
-    //og code end
-// messages.push({ role: 'user', content: rawResult },...messages)
-setResultArray([...messages, { role: 'user', content: rawResult }])
-// setMessages((messages) => [
-//   ...messages,
-//   { role: 'user', content: rawResult },
-// ]);
-// messages.push({ role: 'user', content: rawResult })
-console.log('front end', messages)
-    // Append the new result to the array
-    // setResultArray((prevResults) => [...prevResults, rawResult]);
-
-    //test
-    // setResultArray((prevResults) => [...prevResults, { role: 'user', content: rawResult }])
-    // todo: push this to new array [...messages, { role: 'user', content: data.item }]
-
-    console.log('chat history 1', messages)
-
+    let rawResult = data.item;  
+    setResultArray([...messages, { role: 'user', content: rawResult }])
     setResult(rawResult);
     setChatInput("");
     setIsLoading(false);
-
   }
-  // console.log('chat history 2', messages)
 
   return (
     <div>
