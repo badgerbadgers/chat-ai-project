@@ -10,8 +10,9 @@ const Draw: NextPage = () => {
   const [productInput, setProductInput] = useState("");
   const [result, setResult] = useState(() => "");
   const [isLoading, setIsLoading] = useState(false);
+  const [resultArray, setResultArray] = useState<string[]>([]);
+  const lastIndex = resultArray.length - 1;
 
-  // Add a click event listener to the copy icon that copies the text in the div to the clipboard when clicked
   useEffect(() => {
     const copyIcon = document.querySelector(".copy-icon");
     if (!copyIcon) return;
@@ -29,7 +30,7 @@ const Draw: NextPage = () => {
       textArea.select();
 
       // Copy the text to the clipboard
-      // document.execCommand("copy");
+      document.execCommand("copy");
 
       // Remove the textarea element
       document.body.removeChild(textArea);
@@ -49,10 +50,8 @@ const Draw: NextPage = () => {
     })
     const data = await response.json();
     let rawResult = data.item;
-
-    // set result to the highlighted code. Address this error: Argument of type 'string' is not assignable to parameter of type '(prevState: undefined) => undefined'.ts(2345)
     setResult(rawResult);
-
+    setResultArray((prevResults) => [...prevResults, productInput]);
     setProductInput("");
     setIsLoading(false);
   }
@@ -60,7 +59,7 @@ const Draw: NextPage = () => {
   return (
     <div>
        <Head>
-      <title>Spideychat</title>
+      <title>Draw something</title>
       <meta name="description" content="" />
       <link rel="icon" href="/favicon.ico" />
     </Head>
@@ -103,9 +102,14 @@ const Draw: NextPage = () => {
               <div
                 ref={textDivRef}
                 className="m-5 "
-                dangerouslySetInnerHTML={{ __html: result }}
               />
-              {/* result */}
+              <h2>You drew:</h2>
+              {resultArray[lastIndex]}
+              <a href={result}>
+              {/* <button onClick={() => download(result, result)}>Download</button> */}
+                <img src={result} alt={productInput}>
+                </img>
+              </a>
             </div>
             <div className="copy-icon absolute top-0 right-0 mt-2 mr-2 cursor-pointer">
               <svg
