@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import openai from '../../utils/openai';
 
-export const chatsArr: string[] = [];
-
 export async function POST(req: NextRequest) {
   const data = await req.json();
   const messages = data.chats
@@ -12,6 +10,5 @@ export async function POST(req: NextRequest) {
     temperature: 0.7,
   });
   const responseText = chatCompletion.data.choices[0].message.content;
-  chatsArr.push(responseText)
   return NextResponse.json({item: responseText});
 } 
