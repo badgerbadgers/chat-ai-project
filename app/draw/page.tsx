@@ -3,6 +3,7 @@ import { NextPage } from "next";
 import Head from "next/head";
 import { useState, useRef, useEffect } from "react";
 import React, { FormEvent } from "react";
+import GoogleSignInButton from "../components/GoogleSigninButton"
 
 const Draw: NextPage = () => {
   // Create a ref for the div element
@@ -58,12 +59,12 @@ const Draw: NextPage = () => {
 
   return (
     <div>
-       <Head>
-      <title>Draw something</title>
-      <meta name="description" content="" />
-      <link rel="icon" href="/favicon.ico" />
-    </Head>
-
+        <Head>
+          <title>Draw something</title>
+          <meta name="description" content="" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+      <GoogleSignInButton/>
       <main
         className="flex flex-col 
                     items-center justify-center m-20"
